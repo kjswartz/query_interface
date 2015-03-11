@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311230844) do
+ActiveRecord::Schema.define(version: 20150311234102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,22 +28,20 @@ ActiveRecord::Schema.define(version: 20150311230844) do
 
   add_index "addresses", ["client_id"], name: "index_addresses_on_client_id", using: :btree
 
-  create_table "client_roles", force: :cascade do |t|
-    t.integer  "client_id"
-    t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "client_roles", ["client_id"], name: "index_client_roles_on_client_id", using: :btree
-  add_index "client_roles", ["role_id"], name: "index_client_roles_on_role_id", using: :btree
-
   create_table "clients", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "clients_roles", id: false, force: :cascade do |t|
+    t.integer "client_id", null: false
+    t.integer "role_id",   null: false
+  end
+
+  add_index "clients_roles", ["client_id", "role_id"], name: "index_clients_roles_on_client_id_and_role_id", using: :btree
+  add_index "clients_roles", ["role_id", "client_id"], name: "index_clients_roles_on_role_id_and_client_id", using: :btree
 
   create_table "orders", force: :cascade do |t|
     t.string   "description"
@@ -63,7 +61,5 @@ ActiveRecord::Schema.define(version: 20150311230844) do
   end
 
   add_foreign_key "addresses", "clients"
-  add_foreign_key "client_roles", "clients"
-  add_foreign_key "client_roles", "roles"
   add_foreign_key "orders", "clients"
 end
