@@ -16,10 +16,12 @@ end
 end
 
 @clients.each do |client|
+  rand(1..10).times do |x|
   Order.create(client_id: client.id,
               description: Faker::Commerce.product_name,
               price: Faker::Commerce.price,
               quantity: rand(1..10))
+  end
 end
 
 if Role.count < 20
