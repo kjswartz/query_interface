@@ -36,7 +36,8 @@ class WelcomeController < ApplicationController
 
    # Searches by user requested number.
    # Because custom SQL could be interjected into our search field, you'd want to filter requests through params.
-   Client.where("orders_count = ?", params[:orders])
+   # Client.where("orders_count = ?", params[:orders])
+   Client.where("orders_count = ?", 6) # to illustrate passing a value.
 
    # Allows you to specify hash key/values in your search, and like above it utilizes the filtering through params to prevent hanky panky.
    Client.where("created_at >= :start_date AND created_at <= :end_date",
